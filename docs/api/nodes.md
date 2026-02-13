@@ -175,7 +175,7 @@ class ServiceNode<T>(
 ) : ContainerNode<T>(label, listOf(source), listOf(destination)), Service<T>
 ```
 
-Similar to a delay node, but can only serve one node at a time.
+Similar to a delay node, but can only serve one object at a time.
 
 ### Sink node
 ```kotlin
