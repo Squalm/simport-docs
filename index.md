@@ -10,7 +10,7 @@ SimPort is a Kotlin library for simulating shipping ports using queue
 theory. SimPort makes designing ports fast and easy, features a clean
 and powerful UI, and runs fast at **TKTK** events per second with metrics.
 
->**Get started with SimPort with [this guide](/docs/quickstart) or check out [these tutorials]()**
+>**Get started with SimPort with [this guide](/docs/quickstart) or check out [these tutorials](/docs/tutorials)**
 
 ## Features
 
@@ -59,12 +59,4 @@ simulator.runFor(3.days)
 sampler.endBatch()
 ```
 
-SimPort can run
-[live visualisations](https://gitlab.doc.ic.ac.uk/g256002107/simport/-/blob/readme/visuals/src/main/kotlin/LiveVisualisation.kt),
-where you see the simulation run
-in realtime,
-[static visualisations](https://gitlab.doc.ic.ac.uk/g256002107/simport/-/blob/readme/visuals/src/main/kotlin/StaticVisualisation.kt),
-where the simulation is run in
-advance, and 
-[multi visualisations](https://gitlab.doc.ic.ac.uk/g256002107/simport/-/blob/readme/visuals/src/main/kotlin/MultiVisualisation.kt),
-for parameter sweeps.
+SimPort can run live visualisations, where you see the simulation run in realtime, static visualisations, where the simulation is run in advance, and multi visualisations, for parameter sweeps.
