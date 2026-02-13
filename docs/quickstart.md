@@ -86,8 +86,6 @@ sampler.endBatch()
 
 Since we're not visualising the simulation as it runs, telling the sampler to run the simulation inside one big batch significantly improves performance, and is thus good practice.
 
-**And that's it!**
-
 ## Visualising results
 
 To visualise your port or completed simulation, SimPort provides three options, but for now let's stick with a static visualisation of the port once it has finished running. Running the visualiser is as simple as calling `StaticVisualisation(sampler)`
@@ -97,6 +95,8 @@ To visualise your port or completed simulation, SimPort provides three options, 
 
 StaticVisualisation(sampler)
 ```
+
+**And that's it!**
 
 ## Complete process
 
