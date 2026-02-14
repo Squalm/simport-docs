@@ -10,6 +10,8 @@ Node builders are sugar that help you build ports. They are designed to be used 
 
 ## DSL helpers
 
+These helper functions have use type safety to ensure you create a valid port. If you understand the concept of a push and pull channel, the DSL should be a intuitive way to express port layouts (without any requirement of understanding all the type weirdness – it's just here to keep you safe).
+
 ### Then connect
 ```kotlin
 fun <
