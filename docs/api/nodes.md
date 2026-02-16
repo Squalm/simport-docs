@@ -83,31 +83,6 @@ class DelayNode<T>(
 
 Takes in a object, and sends it out through the designated destination output channel after some delay specified by the `delayProvider`. Can hold any number of objects and delays happen simultaneously.
 
-### Fork node
-```kotlin
-class ForkNode<T>(
-    label: String,
-    source: PushInputChannel<T>,
-    destinations: List<PushOutputChannel<T>>,
-    policy: ForkPolicy<T> = RandomForkPolicy(),
-) : Node(label, listOf(source), destinations)
-```
-
-Takes in a object, and emits it to any one of its destinations, as long as the output channel is open. Use `policy` to define policy for where the node should emit.
-
-Equivalent of OrForks in queue theory.
-
-### Join node
-```kotlin
-class JoinNode<T>(
-    label: String, 
-    sources: List<PushInputChannel<T>>, 
-    destination: PushOutputChannel<T>
-) : Node(label, sources, listOf(destination))
-```
-
-Push joins join multiple streams together.
-
 ### Match node
 ```kotlin
 class MatchNode<MainInputT, SideInputT, OutputT, ChannelT : ChannelType<ChannelT>>(
@@ -207,3 +182,54 @@ class SplitNode<InputT, MainOutputT, SideOutputT, ChannelT : ChannelType<Channel
 ```
 
 Splits an object into two using a `splitter` and sends them down the main and side channel. Crucially used with a match node in bounded subnetworks.
+
+## Forks and Joins
+Forks and Joins are a bit more complicated, as their behaviour can be changed by custom policies that controls how things move through the nodes' multiple input or output channels. 
+
+### Pull Fork node
+```kotlin
+class PullForkNode<T>(
+    label: String,
+    private val source: PullInputChannel<T>,
+    private val destinations: List<PullOutputChannel<T>>,
+) : Node(label, listOf(source), destinations)
+```
+Pull forks allow multiple pull-input forked channels to pull from a shared input. When any of its output pull-channels ready, the pull fork node will pull from its upstream node, and feed it to the ready pull channel.
+
+### Push Join node
+```kotlin
+class JoinNode<T>(
+    label: String, 
+    sources: List<PushInputChannel<T>>, 
+    destination: PushOutputChannel<T>
+) : Node(label, sources, listOf(destination))
+```
+
+Push joins join multiple streams together blindly, i.e., when an arbitrary input channel pushes an item into the push join, the node will forward it automatically to the output and push it out. This is symmetric to pull forks
+
+
+### Push Fork node
+```kotlin
+class PushForkNode<T>(
+    label: String,
+    private val source: PushInputChannel<T>,
+    private val destinations: List<PushOutputChannel<T>>,
+    private val policy: ForkPolicy<T> = RandomPolicy<PushOutputChannel<T>>().asForkPolicy(),
+) : Node(label, listOf(source), destinations)
+```
+
+Takes in a object, and emits it to any one of its destinations, as long as the output channel is open. Use `policy` to define policy for where the node should emit.
+
+Equivalent of OrForks in queue theory.
+
+### Pull Join node
+```kotlin
+class PullJoinNode<T>(
+    label: String,
+    private val sources: List<PullInputChannel<T>>,
+    private val destination: PullOutputChannel<T>,
+    private val policy: JoinPolicy<T> = RandomPolicy<PullInputChannel<T>>().asJoinPolicy(),
+) : Node(label, sources, listOf(destination))
+```
+
+When its' destination becomes available, based on its `policy`, the join node chooses which one of its input channels to receive (pull) from. This is symmetric to push forks, but utilises different policies to push fork nodes.
