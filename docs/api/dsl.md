@@ -65,7 +65,7 @@ Build a pump node.
 fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Push>.thenFork(
     label: String,
     lanes: List<(RegularNodeBuilder<PushForkNode<ItemT>, ItemT, ChannelType.Push>) -> R>,
-    policy: ForkPolicy<ItemT> = RandomPolicy<PushOutputChannel<ItemT>>().asForkPolicy(),
+    policy: ForkPolicy<ItemT> = forkPolicy(RandomPolicy),
 ): List<R>
 ```
 ```kotlin
@@ -73,7 +73,7 @@ fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Push>.thenFork(
 fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Push>.thenFork(
     label: String,
     numLanes: Int,
-    policy: ForkPolicy<ItemT> = RandomPolicy<PushOutputChannel<ItemT>>().asForkPolicy(),
+    policy: ForkPolicy<ItemT> = forkPolicy(RandomPolicy()),
     laneAction: (Int, RegularNodeBuilder<PushForkNode<ItemT>, ItemT, ChannelType.Push>) -> R,
 ): List<R>
 ```
@@ -100,7 +100,7 @@ fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Pull>.thenFork(
 fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Pull>.thenPushFork(
     label: String,
     numLanes: Int,
-    policy: ForkPolicy<ItemT> = RandomPolicy<PushOutputChannel<ItemT>>().asForkPolicy(),
+    policy: ForkPolicy<ItemT> = forkPolicy(RandomPolicy()),
     laneAction: (Int, RegularNodeBuilder<PushForkNode<ItemT>, ItemT, ChannelType.Push>) -> R,
 ): List<R>
 ```
@@ -119,7 +119,7 @@ fun <T> List<NodeBuilder<T, ChannelType.Push>>.thenJoin(
 // Pull join
 fun <T> List<NodeBuilder<T, ChannelType.Pull>>.thenJoin(
     label: String,
-    policy: JoinPolicy<T> = RandomPolicy<PullInputChannel<T>>().asJoinPolicy(),
+    policy: JoinPolicy<T> = joinPolicy(RandomPolicy()),
 ): RegularNodeBuilder<PullJoinNode<T>, T, ChannelType.Pull>
 ```
 
