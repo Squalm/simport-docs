@@ -14,12 +14,8 @@ These helper functions have use type safety to ensure you create a valid port. I
 
 ### Then connect
 ```kotlin
-fun <
-    ItemT, 
-    ChannelT : ChannelType<ChannelT>
-> RegularNodeBuilder<*, out ItemT, ChannelT>.thenConnect(
-    connection: Connection<in ItemT, ChannelT>
-)
+fun <ItemT, ChannelT : ChannelType<ChannelT>> RegularNodeBuilder<*, out ItemT, ChannelT>
+        .thenConnect(connection: Connection<in ItemT, ChannelT>)
 ```
 
 Connect a node that produces an `ItemT` to a channel.
