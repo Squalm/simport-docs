@@ -33,7 +33,8 @@ Connects a node output to an `OutputRef`. Useful in compound nodes, for example.
 ### Arrivals
 ```kotlin
 fun <T> arrivals(
-    label: String, generator: Generator<T>
+    label: String, 
+    generator: Generator<T>
 ): RegularNodeBuilder<ArrivalNode<T>, T, ChannelType.Push>
 ```
 
@@ -60,31 +61,69 @@ Build a pump node.
 
 ### Then fork
 ```kotlin
+// Push fork with lanes defined in a list
 fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Push>.thenFork(
     label: String,
-    lanes: List<(RegularNodeBuilder<ForkNode<ItemT>, ItemT, ChannelType.Push>) -> R>,
-    policy: ForkPolicy<ItemT> = RandomForkPolicy(),
+    lanes: List<(RegularNodeBuilder<PushForkNode<ItemT>, ItemT, ChannelType.Push>) -> R>,
+    policy: ForkPolicy<ItemT> = RandomPolicy<PushOutputChannel<ItemT>>().asForkPolicy(),
 ): List<R>
 ```
 ```kotlin
+// Push fork with lanes defined in a lambda function
 fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Push>.thenFork(
     label: String,
     numLanes: Int,
-    policy: ForkPolicy<ItemT> = RandomForkPolicy(),
-    laneAction: (Int, RegularNodeBuilder<ForkNode<ItemT>, ItemT, ChannelType.Push>) -> R,
+    policy: ForkPolicy<ItemT> = RandomPolicy<PushOutputChannel<ItemT>>().asForkPolicy(),
+    laneAction: (Int, RegularNodeBuilder<PushForkNode<ItemT>, ItemT, ChannelType.Push>) -> R,
 ): List<R>
 ```
 
-Build a fork node. Returns a `List<R>` so you can iterate over the outputs of the fork with all the usual sugar.
+```kotlin
+// Pull fork with lanes defined in a list
+fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Pull>.thenFork(
+    label: String,
+    lanes: List<(RegularNodeBuilder<PullForkNode<ItemT>, ItemT, ChannelType.Pull>) -> R>,
+): List<R>
+```
+
+```kotlin
+// Pull fork with lanes defined in a lambda function
+fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Pull>.thenFork(
+    label: String,
+    numLanes: Int,
+    laneAction: (Int, RegularNodeBuilder<PullForkNode<ItemT>, ItemT, ChannelType.Pull>) -> R,
+): List<R>
+```
+
+```kotlin
+// Syntactic sugar to convert from Pull-output source to Push-input destination lanes
+fun <ItemT, R> NodeBuilder<ItemT, ChannelType.Pull>.thenPushFork(
+    label: String,
+    numLanes: Int,
+    policy: ForkPolicy<ItemT> = RandomPolicy<PushOutputChannel<ItemT>>().asForkPolicy(),
+    laneAction: (Int, RegularNodeBuilder<PushForkNode<ItemT>, ItemT, ChannelType.Push>) -> R,
+): List<R>
+```
+
+Build a fork node, which may be a Push Fork or Pull Fork depending on the output type of the previous node. Returns a `List<R>` so you can iterate over the outputs of the fork with all the usual sugar.
 
 ### Then join
 ```kotlin
+// Push join
 fun <T> List<NodeBuilder<T, ChannelType.Push>>.thenJoin(
     label: String
-): RegularNodeBuilder<JoinNode<T>, T, ChannelType.Push>
+): RegularNodeBuilder<PushJoinNode<T>, T, ChannelType.Push>
 ```
 
-Build a join node.
+```kotlin
+// Pull join
+fun <T> List<NodeBuilder<T, ChannelType.Pull>>.thenJoin(
+    label: String,
+    policy: JoinPolicy<T> = RandomPolicy<PullInputChannel<T>>().asJoinPolicy(),
+): RegularNodeBuilder<PullJoinNode<T>, T, ChannelType.Pull>
+```
+
+Build a join node of appropriate type, which merges a list of lanes in the DSL to a single pathway.
 
 ### Then match
 ```kotlin
