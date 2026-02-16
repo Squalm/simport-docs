@@ -88,9 +88,9 @@ channels allows the destination node to pull objects from the source node.
 
 A push channel is represented with a pushing symbol. A pull channel is represented with a circular grabbing symbol. 
 
-| ![image-20260216172729723](/home/lucas/.config/Typora/typora-user-images/image-20260216172729723.png) | ![image-20260216173448720](/home/lucas/.config/Typora/typora-user-images/image-20260216173448720.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Push Channel                                                 | Pull Channel                                                 |
+| ![push-channel-symbol](./assets/push-channel-symbol.png) | ![pull-channel-symbol](./assets/pull-channel-symbol.png) |
+| -------------------------------------------------------- | -------------------------------------------------------- |
+| Push Channel                                             | Pull Channel                                             |
 
 ### Push and pull channel events / callbacks 
 
@@ -184,9 +184,9 @@ We can use queues to convert from a push channel to a pull channel. The queue co
 
 Symmetrically, a pump converts from a pull channel to a push channel. The pump pulls from the input whenever the input is ready and pushes the object through the output channel. 
 
-| ![image-20260216173715104](/home/lucas/.config/Typora/typora-user-images/image-20260216173715104.png) | ![image-20260216173856582](/home/lucas/.config/Typora/typora-user-images/image-20260216173856582.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Pump                                                         | Queue                                                        |
+| ![pump-node](./assets/pump-node.png) | ![queue-node](./assets/queue-node.png) |
+| ------------------------------------ | -------------------------------------- |
+| Pump                                 | Queue                                  |
 
 ### Patterns to use for safely writing nodes
 
