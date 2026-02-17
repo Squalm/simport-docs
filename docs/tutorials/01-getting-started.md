@@ -12,23 +12,27 @@ nav_order: 1
 We've made a template project that sets up the SimPort repository as a dependency.
 
 Git clone the repository to get started.
+
 ```bash 
 git clone https://github.com/PortSim/SimPort-Template.git
 ```
 
 We recommend using IntelliJ for development, but you can also use gradlew to build and run the application.
+
 ```bash
 cd SimPort-Template
 ./gradlew run 
 ```
 
-Using the template, we've created a tutorial project with each tutorial as a commit. To follow along with the tutorial run 
+Using the template, we've created a tutorial project with each tutorial as a commit. To follow along with the tutorial, run
+
 ```bash
 git clone https://github.com/PortSim/SimPort-Tutorial.git
-git checkout origin/main/01-getting-started
+git checkout ":/01-getting-started"
 ```
 
-Use gradlew to view the simulations. 
+Use gradlew to run the tutorial.
+
 ```bash
 cd SimPort-Tutorial 
 ./gradlew run 
@@ -107,13 +111,16 @@ should be explicit.
 ```kotlin
 fun main() {
     // Option 1: Run a simulation for a set duration and inspect its results
-    runSimulation(demoPort(), 20.days)
-    
+    runSimulation(examplePort(), 20.days)
+
     // Option 2: Run the simulation live in the GUI and see results as they happen
-    runLiveSimulation(demoPort())
+    runLiveSimulation(examplePort())
 }
 ```
 
-## Looking at the metrics 
+## Looking at the metrics
 
-At the top of the screen, there's a metrics tab which displays the occupancy of each node, mean occupancy over time, and a confidence interval of the mean.
+At the top of the screen, there's a metrics tab which displays the occupancy of each node, mean occupancy over time, and
+a confidence interval of the mean.
+
+![img.png](../../assets/metrics-tab-arrow.png)

@@ -21,7 +21,7 @@ fun examplePort2(
 ): Scenario = buildScenario {
     arrivals(
         "Truck Arrivals",
-        Generators.constant(::Truck, Delays.exponentialWithMean(4.minutes)),
+        Generators.constant(::Truck, Delays.exponentialWithMean(5.minutes)),
     )
         // We split the trucks into `numberOfLanes` lanes:
         .thenFork("Truck Split", numLanes = numberOfLanes) { i, lane ->
@@ -34,47 +34,45 @@ fun examplePort2(
         // ...and leave the simulation
         .thenSink(label = "Truck Departures")
 }.withMetrics {
-    // Track the occupancy of each Queue
-    trackAll<Queue<*>>(Occupancy)
+    // Track how long each truck spends in the network
+    trackGlobal(ResidenceTime)
 }
 ```
 
-This gives the following port layout:
-
-![img.png](../../assets/img.png)
-
-which largely looks as we'd expect, except for the `Pump` nodes, which we will now discuss.
-
-Connections between nodes are called "channels". We have two types of channels:
-
-- Push channels are driven by the upstream node sending things downstream
-- Pull channels are driven by the downstream node requesting things from upstream
-
-| ![push-channel-symbol](../../assets/push-channel-symbol.png) | ![pull-channel-symbol](../../assets/pull-channel-symbol.png) |
-|--------------------------------------------------------------|--------------------------------------------------------------|
-| Push Channel Symbol                                          | Pull Channel Symbol                                          |
-
-`Pump` nodes simply convert from a pull channel to a push channel, by repeatedly requesting items from its input and
-sending them downstream. For convenience, they are inserted automatically when making a connection from a pull output to
-a push input.
-
-The inverse concept is a `Queue`, which converts from a push to a pull. Items are pushed into a queue and remain there
-until the downstream requests them. `Queue`s are, by contrast, *not* inserted automatically, since we believe they
-should be explicit.
-
-## Running a simulation
+## Running the Simulations
 
 ```kotlin
 fun main() {
-    // Option 1: Run a simulation for a set duration and inspect its results
-    runSimulation(demoPort(), 20.days)
+    val simulations: Map<String, Scenario> =
+        // Try 3-8 lanes
+        (3..8).associate { numLanes ->
+            "$numLanes Lanes" to examplePort2(numLanes)
+        }
     
-    // Option 2: Run the simulation live in the GUI and see results as they happen
-    runLiveSimulation(demoPort())
+    // Run all the simulations and compare results
+    runSimulations(simulations, 20.days)
 }
 ```
 
-## Looking at the metrics 
+## Visualising the Results
 
+To follow along. Inside `SimPort-Tutorial` run 
+```bash 
+git checkout ":/02-comparing-simulations"
+gradlew run 
+```
 
+(Insert picture here - arrow pointing at bottom left). 
 
+The bottom tabs allow you to switch between the different simulations. 
+
+(Insert picture here - arrow pointing at the top right) 
+
+The summary metrics tab shows graphs with metrics aggregated across all simulations.
+
+(Insert picture here - graph) 
+
+Hold the left mouse button over the graph to see the breakdown of the metrics at that point in time. 
+
+When we defined the port, we specified to `trackGlobal(ResidenceTime)`. This tracks the amount of time trucks spend moving through the port. 
+For ports with over six lanes, the time stabilises showing that the port is large enough to handle the input. 
