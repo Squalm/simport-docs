@@ -1,4 +1,5 @@
 ---
+hidden: true
 title: Core Concepts
 layout: default
 nav_order: 3
@@ -15,7 +16,9 @@ A node's behaviour is customised similar to a state machine: it's a class with c
 happen. The class's data corresponds to the state of a state machine and the behaviour of the callbacks define the
 transitions of a state machine. These callbacks can schedule additional callbacks that will be called after a specified delay. 
 
-## Our first port
+> This file is separated in sections. Some sections labelled with "Concept:" explain core concepts while sections labelled with "Example:" provide small examples use the concepts with within a small simulation. 
+
+## Concept: Simple Road Node
 
 To represent a road node, we create a node that schedules a send event on its output channel after a delay.
 
@@ -31,6 +34,8 @@ class Road(inputChannel: InputChannel<Truck, ChannelType.Push>, outputChannel: O
 ```
 
 We call the parent Node constructor to tell the simulator what this nodes inputs and outputs are. This will be used to visualise the port. In the init function, we register a callback for when the channel receives a truck. When that happens, we schedule a callback to happen 10 seconds later whereby we send the truck through the output channel 
+
+## Example: Simple Port
 
 We can create a port by connecting a source node, our delay node, and a sink node. We recommend using the DSL for more conveniently defining bigger ports but for simplicity sake, we can define a port directly without using the DSL. 
 
@@ -81,20 +86,22 @@ down to render events at the play speed. The arrows are green to represent that 
 
 <video src="../assets/basic-port-visualisation.webm" controls="" style="max-width: 100%"></video>
 
-## Push and pull channels
+## Concept: Push and pull channels
 
 We have two types of channels: push channels allows the source node to push objects to the destination node, pull
 channels allows the destination node to pull objects from the source node.
 
 A push channel is represented with a pushing symbol. A pull channel is represented with a circular grabbing symbol. 
 
-| ![push-channel-symbol](../assets/push-channel-symbol.png) | ![pull-channel-symbol](../assets/pull-channel-symbol.png) |
+| ![push-channel-symbol](../../assets/push-channel-symbol.png) | ![pull-channel-symbol](../../assets/pull-channel-symbol.png) |
 | -------------------------------------------------------- | -------------------------------------------------------- |
 | Push Channel                                             | Pull Channel                                             |
 
 ### Push and pull channel events / callbacks 
 
-Pull channels are supposed to allow destination nodes to decide when to pull an object. Thereforce, a pull channel has the concept of ready. When a pull channel is ready the destination node can pull an item from the source node. Below are the extension functions that allow nodes to register callbacks on pull channels / change the state of a pull channel.  For example, the source node can call `markReady()` to tell the destination node that they can now pull an item from the channel. The destination node can register a callback via `whenReady({...})` to be notified. 
+**Pull channels: **
+
+Pull channels are supposed to allow destination nodes to decide when to pull an object. Therefore, a pull channel has the concept of ready. When a pull channel is ready the destination node can pull an item from the source node. Below are the extension functions that allow nodes to register callbacks on pull channels / change the state of a pull channel.  For example, the source node can call `markReady()` to tell the destination node that they can now pull an item from the channel. The destination node can register a callback via `whenReady({...})` to be notified. 
 
 ```kotlin
 fun PullInputChannel<*>.isReady(): Boolean = asImpl().isReady()
@@ -130,6 +137,8 @@ fun <T> PullOutputChannel<T>.onPull(
 ```
 
 > **Caution:** Pulling from an input channel that is not ready will throw an exception 
+
+**Push channels: **
 
 Push channels are the channels we used in the simple port example. They allow the source node to send an item to the destination node. Additionally, the destination node can tell the source node that they are full and can no longer accept inputs. 
 
@@ -184,11 +193,11 @@ We can use queues to convert from a push channel to a pull channel. The queue co
 
 Symmetrically, a pump converts from a pull channel to a push channel. The pump pulls from the input whenever the input is ready and pushes the object through the output channel. 
 
-| ![pump-node](../assets/pump-node.png) | ![queue-node](../assets/queue-node.png) |
+| ![pump-node](../../assets/pump-node.png) | ![queue-node](../../assets/queue-node.png) |
 | ------------------------------------ | -------------------------------------- |
 | Pump                                 | Queue                                  |
 
-### Patterns to use for safely writing nodes
+## Note: Patterns to use for safely writing nodes
 
 Because events are based on callbacks, it could be the case that there is a cycle in the graph resulting in the callback being called before it has returned. Re-entry is complicated because the object's internal state might be in a weird state so we strongly recommend that nodes do not send objects immediately upon being notified. When a node wants to send an object immediately after receiving a notification it should schedule a callback with 0 delay. The 0 delay callback should check that when it's called the state is still open / ready before pushing / pulling. This is because pull-forks or push-joins nodes might notify several nodes that they're ready and it might be the case that by the time the callback has been called the fork node's item is already gone. 
 
@@ -227,3 +236,6 @@ class PumpNode<T>(
 ```
 
 This is taken internally from the pump implementation. In particular, the schedule's lambda checks that the pull channel `source.isReady` and the push channel `destination.isOpen()` before trying to send. 
+
+## Concept: Metrics
+
