@@ -1,7 +1,7 @@
 ---
 title: Documentation
 layout: default
-nav_order: 4
+nav_order: 5
 ---
 # Core Concepts
 
@@ -88,7 +88,7 @@ channels allows the destination node to pull objects from the source node.
 
 A push channel is represented with a pushing symbol. A pull channel is represented with a circular grabbing symbol. 
 
-| ![push-channel-symbol](./assets/push-channel-symbol.png) | ![pull-channel-symbol](./assets/pull-channel-symbol.png) |
+| ![push-channel-symbol](../assets/push-channel-symbol.png) | ![pull-channel-symbol](../assets/pull-channel-symbol.png) |
 | -------------------------------------------------------- | -------------------------------------------------------- |
 | Push Channel                                             | Pull Channel                                             |
 
@@ -184,7 +184,7 @@ We can use queues to convert from a push channel to a pull channel. The queue co
 
 Symmetrically, a pump converts from a pull channel to a push channel. The pump pulls from the input whenever the input is ready and pushes the object through the output channel. 
 
-| ![pump-node](./assets/pump-node.png) | ![queue-node](./assets/queue-node.png) |
+| ![pump-node](../assets/pump-node.png) | ![queue-node](../assets/queue-node.png) |
 | ------------------------------------ | -------------------------------------- |
 | Pump                                 | Queue                                  |
 
