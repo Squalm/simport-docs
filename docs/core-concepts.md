@@ -1,5 +1,5 @@
 ---
-title: Documentation
+title: Core Concepts
 layout: default
 nav_order: 5
 ---
