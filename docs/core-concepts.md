@@ -79,7 +79,7 @@ You should be able to see the following port. Click run to play the simulation. 
 click the step button to jump the simulation forward. Stepping simulates the port as fast as possible without slowing
 down to render events at the play speed. The arrows are green to represent that the channels are open. When channels are closed they are drawn with red. 
 
-<video src="../assets/basic-port-visualisation.webm" controls=""></video>
+<video src="../assets/basic-port-visualisation.webm" controls="" style="max-width: 100%"></video>
 
 ## Push and pull channels
 
