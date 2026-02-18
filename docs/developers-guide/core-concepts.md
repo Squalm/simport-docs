@@ -99,7 +99,7 @@ A push channel is represented with a pushing symbol. A pull channel is represent
 
 ### Push and pull channel events / callbacks 
 
-**Pull channels: **
+**Pull channels:**
 
 Pull channels are supposed to allow destination nodes to decide when to pull an object. Therefore, a pull channel has the concept of ready. When a pull channel is ready the destination node can pull an item from the source node. Below are the extension functions that allow nodes to register callbacks on pull channels / change the state of a pull channel.  For example, the source node can call `markReady()` to tell the destination node that they can now pull an item from the channel. The destination node can register a callback via `whenReady({...})` to be notified. 
 
@@ -138,7 +138,7 @@ fun <T> PullOutputChannel<T>.onPull(
 
 > **Caution:** Pulling from an input channel that is not ready will throw an exception 
 
-**Push channels: **
+**Push channels:**
 
 Push channels are the channels we used in the simple port example. They allow the source node to send an item to the destination node. Additionally, the destination node can tell the source node that they are full and can no longer accept inputs. 
 
