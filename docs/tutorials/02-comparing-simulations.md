@@ -48,7 +48,7 @@ fun main() {
         (3..8).associate { numLanes ->
             "$numLanes Lanes" to examplePort2(numLanes)
         }
-    
+
     // Run all the simulations and compare results
     runSimulations(simulations, 20.days)
 }
@@ -56,23 +56,25 @@ fun main() {
 
 ## Visualising the Results
 
-To follow along. Inside `SimPort-Tutorial` run 
+To follow along. Inside `SimPort-Tutorial` run
+
 ```bash 
 git checkout ":/02-comparing-simulations"
 gradlew run 
 ```
 
-(Insert picture here - arrow pointing at bottom left). 
+The bottom tabs allow you to switch between the different simulations:
 
-The bottom tabs allow you to switch between the different simulations. 
+![simulation-tabs-arrow.png](../../assets/simulation-tabs-arrow.png)
 
-(Insert picture here - arrow pointing at the top right) 
+The summary metrics tab shows graphs with metrics aggregated across all simulations:
 
-The summary metrics tab shows graphs with metrics aggregated across all simulations.
+![summary-tab-arrow.png](../../assets/summary-tab-arrow.png)
 
-(Insert picture here - graph) 
+Hold the left mouse button over the graph to see the breakdown of the metrics at that point in time:
 
-Hold the left mouse button over the graph to see the breakdown of the metrics at that point in time. 
+![summary-graph.png](../../assets/summary-graph.png)
 
-When we defined the port, we specified to `trackGlobal(ResidenceTime)`. This tracks the amount of time trucks spend moving through the port. 
+When we defined the port, we specified to `trackGlobal(ResidenceTime)`. This tracks the amount of time trucks spend
+moving through the port.
 For ports with over six lanes, the time stabilises showing that the port is large enough to handle the input. 
