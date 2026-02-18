@@ -153,6 +153,31 @@ val output =
         }
 ```
 
+## Connections
+
+It is often desirable to make ports which involve cycles, e.g. when a node can't be serviced it might go back round.
+This can be achieved using `Connection`s:
+
+```kotlin
+fun cyclicPort() = buildScenario {
+    // Make a deferred push connection, equivalent concepts exist for pull channels
+    val backEdge = newPushConnection<Truck>()
+
+    val arrivals = arrivals("Truck Arrivals", Generators.constant(::Truck, Delays.exponentialWithMean(10.minutes)))
+
+    listOf(arrivals, backEdge)
+        // Merge the new arrivals and the looping trucks
+        .thenJoin("Trucks Merge")
+        .thenDelay("Road", Delays.fixed(5.minutes))
+        // After the road, send trucks back round
+        .thenConnect(backEdge)
+}
+```
+
+This gives us the following basic layout:
+
+![cyclic-port.png](../../assets/cyclic-port.png)
+
 # Helpers
 
 Slightly simpler than compound nodes, you can make regular helper functions to extract new components:
