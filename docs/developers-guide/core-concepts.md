@@ -16,7 +16,8 @@ A node's behaviour is customised similar to a state machine: it's a class with c
 happen. The class's data corresponds to the state of a state machine and the behaviour of the callbacks define the
 transitions of a state machine. These callbacks can schedule additional callbacks that will be called after a specified delay. 
 
-> This file is separated in sections. Some sections labelled with "Concept:" explain core concepts while sections labelled with "Example:" provide small examples use the concepts with within a small simulation. 
+{: .highlight }
+This file is separated in sections. Some sections labelled with "Concept:" explain core concepts while sections labelled with "Example:" provide small examples use the concepts with within a small simulation. 
 
 ## Concept: Simple Road Node
 
@@ -136,7 +137,8 @@ fun <T> PullOutputChannel<T>.onPull(
 }
 ```
 
-> **Caution:** Pulling from an input channel that is not ready will throw an exception 
+{: .warning }
+Pulling from an input channel that is not ready will throw an exception 
 
 **Push channels:**
 
@@ -174,16 +176,15 @@ fun PushOutputChannel<*>.whenClosed(
 ) = asImpl().whenClosed(callback)
 ```
 
-> **Caution:** Pushing into an channel that is not open will throw an exception 
+{: .warning }
+Pushing into an channel that is not open will throw an exception 
 
-> **Remark:** We initially only had push channels. However, we realised that it was not enough to represent match nodes, our
-> equivalent to a petri-net transitions. A petri-net transition waits for all its input channels to have an object before
-> simultaneously pulling an object from every input channel. 
+{: .note }
+>We initially only had push channels. However, we realised that it was not enough to represent match nodes, our equivalent to a petri-net transitions. A petri-net transition waits for all its input channels to have an object before simultaneously pulling an object from every input channel. 
 >
-> This came to a head when we tried to represent a subnetwork with limited capacity. This subnetwork is represented by a match node which matches a token with an incoming item. The match node limits the amount of things in the subnetwork. At the exit of the subnetwork, a split node takes the token off and puts it into the queue which feeds back into the match node to allow more things to enter. With just a push node, a vehicle will get stuck in the match node while its waiting for the subnetwork to be ready. This is undesirable because if the subnetwork is preceded by a split node, other subnetworks might be ready and the vehicle should've entered one of the other paths instead of waiting at this one. 
+>This came to a head when we tried to represent a subnetwork with limited capacity. This subnetwork is represented by a match node which matches a token with an incoming item. The match node limits the amount of things in the subnetwork. At the exit of the subnetwork, a split node takes the token off and puts it into the queue which feeds back into the match node to allow more things to enter. With just a push node, a vehicle will get stuck in the match node while its waiting for the subnetwork to be ready. This is undesirable because if the subnetwork is preceded by a split node, other subnetworks might be ready and the vehicle should've entered one of the other paths instead of waiting at this one. 
 >
-> Moreover, push forks are nicely symmetric to pull joins. A push fork takes in one input and chooses one output to push into. A pull join takes in a number of pull inputs and one
-> output. It can decide from which channel to pull from.
+>Moreover, push forks are nicely symmetric to pull joins. A push fork takes in one input and chooses one output to push into. A pull join takes in a number of pull inputs and one output. It can decide from which channel to pull from.
 
 ### Converting between push and pull channels with queues and pumps 
 
