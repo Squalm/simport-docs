@@ -65,9 +65,9 @@ Continuous – tracks how many occupants the node or simulation has.
 
 Instantaneous – tracks how long items spend in each node, or in the whole simulation.
 
-### `Throughput`
+### `Latency`
 
-Continuous – tracks the number of items emitted per unit of time by a node or by the whole simulation.
+Instantaneous – tracks the time between items leaving a node or the whole simulation.
 
 ## Custom Metrics
 
