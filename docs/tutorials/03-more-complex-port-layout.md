@@ -202,3 +202,14 @@ val pushOutput =
     pushInput
         .thenCarPark(capacity = 10)
 ```
+
+The `NodeBuilder` interface that is passed throughout the DSL functions takes the types:
+```kotlin
+// ChannelT representing the type of the channel connecting from the previous node
+sealed interface NodeBuilder<out ItemT, ChannelT : ChannelType<ChannelT>>
+
+sealed interface ChannelType<SelfT : ChannelType<SelfT>> {
+    data object Push : ChannelType<Push>
+    data object Pull : ChannelType<Pull>
+}
+```

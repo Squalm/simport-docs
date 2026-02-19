@@ -62,6 +62,4 @@ input
     }
 ```
 
-Subnetworks are implemented using match nodes and split nodes, and a token buffer. When the token buffer is drained entirely, as all tokens are paired with some vehicle inside the bounded subnetwork, then the match node will refuse any additional vehicles to pass through, until the split node processes (representing a vehicle leaving the subnetwork) a token-paired vehicle. 
-
-The occupancy of the subnetwork is known.
+Subnetworks are implemented using match nodes and split nodes, and a token buffer. When the token buffer is drained entirely, as all tokens are paired with some vehicle inside the bounded subnetwork, then the match node will refuse any additional vehicles to pass through, until the split node processes (representing a vehicle leaving the subnetwork) a token-paired vehicle.
