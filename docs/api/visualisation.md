@@ -1,7 +1,7 @@
 ---
 title: Visualisation
 layout: default
-parent: Documentation
+parent: Internals
 nav_order: 8
 ---
 

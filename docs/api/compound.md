@@ -1,6 +1,6 @@
----
+<!-- ---
 title: Compound Nodes
 layout: default
-parent: Documentation
+parent: Internals
 nav_order: 5
----
+--- -->

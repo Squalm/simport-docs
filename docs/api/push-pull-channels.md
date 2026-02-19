@@ -1,10 +1,10 @@
----
+<!-- ---
 title: Push channels and pull channels
 layout: default
 nav_order: 10
-parent: Documentation
+parent: Internals
 nav_exclude: true # hidden because it's in core concepts
----
+--- -->
 
 ## Push and pull channels
 

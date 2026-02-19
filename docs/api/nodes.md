@@ -1,7 +1,7 @@
 ---
 title: Nodes
 layout: default
-parent: Documentation
+parent: Internals
 nav_order: 1
 ---
 # Nodes

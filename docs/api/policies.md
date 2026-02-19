@@ -1,7 +1,7 @@
 ---
 title: Policy
 layout: default
-parent: Documentation
+parent: Internals
 nav_order: 7
 ---
 
