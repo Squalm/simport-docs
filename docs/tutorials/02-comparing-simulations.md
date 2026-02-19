@@ -2,7 +2,7 @@
 title: Comparing Simulations
 layout: default
 parent: Tutorials
-nav_order: 2
+nav_order: 3
 ---
 
 # Comparing Simulations

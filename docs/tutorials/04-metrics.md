@@ -2,7 +2,7 @@
 title: Metrics
 layout: default
 parent: Tutorials
-nav_order: 4
+nav_order: 2
 ---
 
 # Metrics
