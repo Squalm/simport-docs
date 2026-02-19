@@ -2,7 +2,8 @@
 hidden: true
 title: Core Concepts
 layout: default
-nav_order: 40
+parent: Internals
+nav_order: 0
 ---
 # Core Concepts
 
