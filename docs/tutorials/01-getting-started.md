@@ -2,7 +2,7 @@
 title: Getting Started
 layout: default
 parent: Tutorials
-nav_order: 1
+nav_order: 10
 ---
 
 # Getting Started

@@ -2,7 +2,7 @@
 title: Defining node policy
 layout: default
 parent: Tutorials
-nav_order: 5
+nav_order: 60
 ---
 # Policies, Tags, and Containers
 

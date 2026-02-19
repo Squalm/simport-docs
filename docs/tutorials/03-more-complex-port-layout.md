@@ -2,7 +2,7 @@
 title: Node types
 layout: default
 parent: Tutorials
-nav_order: 9
+nav_order: 20
 ---
 
 # Node Types

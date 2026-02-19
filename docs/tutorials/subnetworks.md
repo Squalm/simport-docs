@@ -2,7 +2,7 @@
 title: Creating subnetworks
 layout: default
 parent: Tutorials
-nav_order: 4
+nav_order: 50
 ---
 
 # Subnetworks and Compound Node
