@@ -2,7 +2,7 @@
 title: Nodes
 layout: default
 parent: Internals
-nav_order: 1
+nav_order: 10
 ---
 # Nodes
 

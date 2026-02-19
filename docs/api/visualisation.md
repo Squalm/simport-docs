@@ -2,7 +2,7 @@
 title: Visualisation
 layout: default
 parent: Internals
-nav_order: 8
+nav_order: 80
 ---
 
 # Visualisations
