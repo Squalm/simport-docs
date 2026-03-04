@@ -53,21 +53,38 @@ varieties.
 
 ## Metric Types
 
-There are 2 types of metrics: Continuous (measured over time) and Instantaneous (triggered by specific events).
+There are 3 types of metrics: Continuous (measured over time), Instantaneous (triggered by specific events), and Rates (events averaged over time).
 
 There are several built-in metrics:
 
-### `Occupancy`
+### Arrival rate `ArrivalRate`
+Rate metric: average rate of arrivals.
 
-Continuous – tracks how many occupants the node or simulation has.
+### Inter-arrival time `InterArrivalTime`
+Instantaneous: time between arrivals.
 
-### `ResidenceTime`
+### Inter-departure time `InterDepartureTime`
+Instantaneous: time between departures.
 
-Instantaneous – tracks how long items spend in each node, or in the whole simulation.
+### Occupancy `Occupancy`
+Continuous: objects in a node.
 
-### `Latency`
+### Residence time `ResidenceTime`
+Instantaneous: total time any object spends in a node before going to a sink
 
-Instantaneous – tracks the time between items leaving a node or the whole simulation.
+{: .important }
+Residence time counts objects that *never* enter a node (as `0`s), whereas response time will not. 
+
+### Response time `ResponseTime` 
+Instantaneous: time an object spends in a node before leaving the node
+
+### Throughput `Throughput`
+Rate: average rate of departures.
+
+### Utilisation `Utilisation`
+Continuous: objects inside doing work as a fraction of capacity.
+
+Utilisation is a Local metric only.
 
 ## Custom Metrics
 
