@@ -88,33 +88,62 @@ Utilisation is a Local metric only.
 
 ## Custom Metrics
 
-Custom metrics can be implemented by extending either `ContinuousMetric` or `InstantaneousMetric`.
+Custom metrics can be implemented by extending `ContinuousMetric`, `InstantaneousMetric`, or `RateMetric`.
 
 ### Continuous Metrics
 
 ```kotlin
-class Occupancy(private val container: Container<*>) : ContinuousMetric() {
-    // Report the current value of the metric, given the time interval
-    override fun reportImpl(previousTime: Instant, currentTime: Instant) = container.occupants.toDouble()
+sealed class Occupancy : ContinuousMetric() {
+
+    protected abstract val current: Int
+
+    override fun reportImpl(previousTime: Instant, currentTime: Instant) = current.toDouble()
+
+    class Local(private val container: Container<*>) : Occupancy() {
+        override val current
+            get() = container.occupants
+    }
 }
 ```
 
 ### Instantaneous Metrics
 
 ```kotlin
-class ServiceTime(service: Service<*>) : InstantaneousMetric() {
-    private lateinit var startTime: Instant
+sealed class InterArrivalTime(private val unit: DurationUnit) : InstantaneousMetric() {
+    private var lastSeen: Instant? = null
 
-    init {
-        service.onEnter {
-            // Record the start time when the service is entered
-            startTime = contextOf<Simulator>().currentTime
+    context(sim: Simulator)
+    protected fun notifySeen() {
+        val currentTime = sim.currentTime
+        val lastSeen = lastSeen
+        if (lastSeen != null) {
+            notify(currentTime, (currentTime - lastSeen).toDouble(unit))
         }
+        this.lastSeen = currentTime
+    }
 
-        service.onLeave {
-            val currentTime = contextOf<Simulator>().currentTime
-            // Report the time difference as a sample of this metric
-            notify(currentTime, (currentTime - startTime).toDouble(DurationUnit.SECONDS))
+    class Local(container: Container<*>, unit: DurationUnit = DurationUnit.SECONDS) : InterArrivalTime(unit) {
+        init {
+            container.onEnter { notifySeen() }
+        }
+    }
+}
+```
+
+### Rate Metrics
+Rate metrics handle calculating the rates entirely in their backend. All the metric implementation needs to do is forward the correct events.
+
+```kotlin
+sealed class Throughput(unit: DurationUnit) : RateMetric(unit) {
+
+    context(sim: Simulator)
+    protected fun notify() {
+        notify(sim.currentTime)
+    }
+
+    class Local(container: Container<*>, unit: DurationUnit) : Throughput(unit) {
+        init {
+            container.onLeave { notify() }
         }
     }
 }
@@ -122,7 +151,7 @@ class ServiceTime(service: Service<*>) : InstantaneousMetric() {
 
 ### Metric Factories
 
-Node-specific metrics should have a companion object extending `MetricFactory`:
+Node-specific Metrics should have a companion object extending `MetricFactory`:
 
 ```kotlin
 class Occupancy(container: Container<*>) : ContinuousMetric() {
