@@ -238,6 +238,3 @@ class PumpNode<T>(
 ```
 
 This is taken internally from the pump implementation. In particular, the schedule's lambda checks that the pull channel `source.isReady` and the push channel `destination.isOpen()` before trying to send. 
-
-## Concept: Metrics
-

@@ -26,6 +26,13 @@ input
     .thenSink("Truck Departures")
 ```
 
+We also allow a provide loss sinks for objects that disappear from the network rather than leaving. This is useful for lossy arrials or after a fork node in some cases.
+
+```kotlin
+input
+    .thenLossSink("Trucks fall into the sea")
+```
+
 ## Delays
 
 Objects coming in are emitted after a given delay:
