@@ -12,6 +12,9 @@ theory. SimPort makes designing ports fast and easy, features a clean UI, and ru
 {: .highlight }
 **Get started with SimPort with [this guide](/docs/tutorials/01-getting-started) or check out the rest of [our tutorials](/docs/tutorials)**
 
+{: .new }
+**API docs also available [here](https://portsim.github.io/SimPort/).**
+
 ## Features
 
 - Design ports in-code with out clean domain specific language
