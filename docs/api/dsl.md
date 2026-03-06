@@ -185,8 +185,25 @@ Build a sink node.
 ```kotlin
 fun <T> NodeBuilder<T, *>.thenDeadEnd(label: String): DeadEndNode<T>
 ```
-
 Build a dead end node.
+
+### saveNode
+```kotlin
+fun <BuilderT : RegularNodeBuilder<NodeT, *, *>, NodeT : NodeGroup> BuilderT.saveNode(
+    saver: (NodeT) -> Unit
+): BuilderT
+```
+```kotlin
+val savedQueueNode : QueueNode<Truck>
+val scenario = buildScenario {
+    arrivals("Arrivals", ...)
+    .thenQueue("Queue")
+    .saveNode { queueNode -> savedQueueNode = queueNode }
+    .thenService("Service", ...)
+    ...
+}
+```
+Saving a reference of a node constructed with the DSL
 
 ### Build scenario
 ```kotlin
